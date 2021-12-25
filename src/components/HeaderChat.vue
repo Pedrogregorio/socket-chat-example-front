@@ -31,6 +31,11 @@ export default {
       default: '',
     },
   },
+  methods: {
+    returnToHome() {
+      this.$router.push({ name: 'Home' });
+    },
+  },
 };
 </script>
 <style lang="scss">

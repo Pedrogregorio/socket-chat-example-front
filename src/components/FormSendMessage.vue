@@ -24,8 +24,11 @@ export default {
       message: '',
     }
   },
-  sendMessage() {
-    this.$emit('sendMessage', this.message);
+  methods: {
+    sendMessage() {
+      this.$emit('sendMessage', this.message);
+      this.message = '';
+    },
   },
 };
 </script>
