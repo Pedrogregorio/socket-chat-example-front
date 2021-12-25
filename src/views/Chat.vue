@@ -32,31 +32,21 @@
           </div>
         </div>
       </div>
-
-      <div class="send-message my-4">
-        <form @submit.prevent="sendMessage">
-          <v-text-field
-            v-model="message"
-            outlined
-            label="Digite sua menssagem"
-          />
-          <v-btn
-            block
-            color="success"
-            type="submit"
-          >
-            Enviar
-          </v-btn>
-        </form>
-      </div>
+      <form-send-message
+        @sendMessage="sendMessage"
+      />
     </v-card>
   </div>
 </template>
 <script>
+import FormSendMessage from '../components/FormSendMessage.vue';
 import HeaderChat from '../components/HeaderChat.vue';
 
 export default {
-  components: { HeaderChat },
+  components: {
+    HeaderChat,
+    FormSendMessage,
+  },
   name: 'Chat',
   data() {
     return {
@@ -174,15 +164,5 @@ export default {
       }
     }
   }
-
-  .nav {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-  } 
 }
 </style>
