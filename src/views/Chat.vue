@@ -60,7 +60,7 @@ export default {
     this.room = this.$route.params.room;
     this.user = this.$route.params.username;
     if (!this.user) this.$router.push({ name: 'Home' });
-    this.$socket.emit("join_room", { room: this.room, user: this.user }, (messages) => {
+    this.$socket.emit("join_room", { room: this.room, name: this.user }, (messages) => {
       messages.forEach(message => this.mountMessage(message));
     });
   },
@@ -73,7 +73,8 @@ export default {
       this.$socket.emit('send_message', {
         room: this.room,
         name: this.user,
-        message: message
+        message: message,
+        createdAt: new Date().toLocaleString()
       });
 
       this.message = '';
