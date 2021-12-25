@@ -1,25 +1,8 @@
 <template>
   <div class="chat d-flex flex-column justify-center align-center">
-    <div
-      class="text-center text-h4 font-weight-black"
-    >
-      {{ room }}
-    </div>
-    <div
-      class="pt-6 return-button"
-    >
-      <div class="content-return-button">
-        <v-btn
-          color="success"
-          elevation="2"
-          @click="returnToHome"
-        >
-          <v-icon>
-            mdi-arrow-left
-          </v-icon>
-        </v-btn>
-      </div>
-    </div>
+    <header-chat
+      :room="room"
+    />
     <v-card
       width="500px"
       max-height="600px"
@@ -70,8 +53,10 @@
   </div>
 </template>
 <script>
+import HeaderChat from '../components/HeaderChat.vue';
 
 export default {
+  components: { HeaderChat },
   name: 'Chat',
   data() {
     return {
@@ -129,21 +114,10 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .chat {
   height: 100vh;
   background-color: greenyellow;
-
-  .return-button {
-    width: 100%;
-    .content-return-button {
-      max-width: 500px;
-      margin: auto;
-      .v-btn {
-        width: 20px;
-      }
-    }
-  }
 
   .card-chat {
     margin: 10px 0px;
