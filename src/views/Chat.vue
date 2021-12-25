@@ -13,23 +13,11 @@
           v-for="(message, index) in messages"
           :key="index"
         >
-          <div
-            class="content-message my-2"
-            :class="'content-'+whichUser(message.name)"
-          >
-            {{ isUser(message.name, index) }}
-            <div
-              :class="whichUser(message.name)"
-              class="message"
-            >
-              <div>
-                {{ message.message }}
-              </div>
-            </div>
-            <div>
-              {{ message.createdAt }}
-            </div> 
-          </div>
+          <message
+            :user="user"
+            :message="message"
+            :previousMessages="messages[index - 1]"
+          />
         </div>
       </div>
       <form-send-message
@@ -41,11 +29,13 @@
 <script>
 import FormSendMessage from '../components/FormSendMessage.vue';
 import HeaderChat from '../components/HeaderChat.vue';
+import Message from '../components/Message.vue';
 
 export default {
   components: {
     HeaderChat,
     FormSendMessage,
+    Message,
   },
   name: 'Chat',
   data() {
@@ -63,7 +53,6 @@ export default {
   },
   created() {
     this.sockets.subscribe("receive_message", (message) => {
-      console.log(message);
       this.mountMessage(message);
     });
   },
@@ -72,31 +61,19 @@ export default {
     this.user = this.$route.params.username;
     if (!this.user) this.$router.push({ name: 'Home' });
     this.$socket.emit("join_room", { room: this.room, user: this.user }, (messages) => {
-      console.log('callback');
-      console.log("Sao essas menssagesn", messages);
       messages.forEach(message => this.mountMessage(message));
     });
   },
   methods: {
-    whichUser(name) {
-      return this.user === name? 'current-user' : 'other-user';
-    },
-    isUser(name, index) {
-      const isUser = this.user === name || name === this.messages[index - 1]?.name;
-      return isUser? '' : `${name}:`;
-    },
-    returnToHome() {
-      this.$router.push({ name: 'Home' });
-    },
     mountMessage(message) {
       this.messages.push(message);
       console.log('mountMessage', message);
     },
-    sendMessage() {
+    sendMessage(message) {
       this.$socket.emit('send_message', {
         room: this.room,
         name: this.user,
-        message: this.message
+        message: message
       });
 
       this.message = '';
@@ -133,34 +110,6 @@ export default {
         background-color: #9fdf35;
         border-radius: 20px;
         border: 3px solid #ebebeb;
-      }
-      .content-message {
-        &.content-current-user {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-        }
-        &.content-other-user {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .message {
-          padding: 10px;
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: nowrap;
-          &.other-user {
-            background-color: #659c10;
-            color: white;
-            border-radius: 10px 10px 10px 0px
-          }
-          &.current-user {
-            background-color: #e5ffbc;
-            color: black;
-            border-radius: 10px 10px 0px 10px
-          }
-        }
       }
     }
   }
