@@ -12,7 +12,7 @@
         {{ message.message }}
       </div>
     </div>
-    <div>
+    <div class="date">
       {{ message.createdAt }}
     </div> 
   </div>
@@ -47,6 +47,11 @@ export default {
 </script>
 <style lang="scss" scoped>
   .content-message {
+    .date {
+      color: #777777;
+      font-size: 0.7rem;
+      margin-top: 5px;
+    }
     &.content-current-user {
       display: flex;
       flex-direction: column;
